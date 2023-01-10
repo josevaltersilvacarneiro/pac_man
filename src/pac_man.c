@@ -1,12 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "pac_man.h"
 
-int
-main(void)
+void
+alloc_map(unsigned int *rows, unsigned int *columns)
+{
+	unsigned int num_of_rows = *rows;
+	unsigned int num_of_columns = *columns;
+
+	map = malloc(sizeof(char *) * num_of_rows);
+	for(register int i = 0; i < num_of_rows; i++)
+		map[i] = malloc(sizeof(char) * num_of_columns);
+}
+
+void
+read_map(unsigned int *rows, unsigned int *columns)
 {
 	FILE *f;
-	unsigned int rows, columns;
-	char **map;
+	int i;
 
 	f = fopen("map.txt", "r");
 	if (f == 0)
@@ -15,23 +24,35 @@ main(void)
 		exit(1);
 	}
 
-	fscanf(f, "%d %d", &rows, &columns);
-	map = malloc(sizeof(char *) * rows);
-	
-	for(register int i = 0; i < 5; i++)
-		*(map + i) = malloc(sizeof(char) * columns);
+	fscanf(f, "%d %d", rows, columns);
 
-	for(register int i = 0; i < 5; i++)
+	alloc_map(rows, columns);
+
+	for(i = 0; i < *rows; i++)
 		fscanf(f, "%s", map[i]);
 
 	fclose(f);
+}
 
-	for(register int i = 0; i < 5; i++)
-		printf("%s\n", map[i]);
-
-	for(register int i = 0; i < 5; i++)
+void
+free_map(unsigned int *rows, unsigned int *columns)
+{
+	for(register int i = 0; i < *rows; i++)
 		free(*(map + i));
 	free(map);
+}
+
+int
+main(void)
+{
+	unsigned int rows, columns;
+
+	read_map(&rows, &columns);
+
+	for(register int i = 0; i < rows; i++)
+		printf("%s\n", map[i]);
+	
+	free_map(&rows, &columns);
 
 	return 0;
 }
