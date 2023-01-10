@@ -1,14 +1,29 @@
 #include "pac_man.h"
 
 void
+check_alloc_ptr(bool ptr)
+{
+	if (ptr)
+	{
+		printf("The amount of memory available isn't enough to run this program\n");
+		exit(1);
+	}
+}
+
+void
 alloc_map(unsigned int *rows, unsigned int *columns)
 {
 	unsigned int num_of_rows = *rows;
 	unsigned int num_of_columns = *columns;
 
 	map = malloc(sizeof(char *) * num_of_rows);
+	check_alloc_ptr(map == NULL);
+
 	for(register int i = 0; i < num_of_rows; i++)
+	{
 		map[i] = malloc(sizeof(char) * num_of_columns);
+		check_alloc_ptr(map[i] == NULL);
+	}
 }
 
 void
