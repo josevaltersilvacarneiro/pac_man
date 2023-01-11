@@ -11,23 +11,20 @@ check_alloc_ptr(bool ptr)
 }
 
 void
-alloc_map(unsigned int *rows, unsigned int *columns)
+alloc_map()
 {
-	unsigned int num_of_rows = *rows;
-	unsigned int num_of_columns = *columns;
-
-	map = malloc(sizeof(char *) * num_of_rows);
+	map = malloc(sizeof(char *) * rows);
 	check_alloc_ptr(map == NULL);
 
-	for(register int i = 0; i < num_of_rows; i++)
+	for(register int i = 0; i < rows; i++)
 	{
-		map[i] = malloc(sizeof(char) * num_of_columns);
+		map[i] = malloc(sizeof(char) * columns);
 		check_alloc_ptr(map[i] == NULL);
 	}
 }
 
 void
-read_map(unsigned int *rows, unsigned int *columns)
+read_map()
 {
 	FILE *f;
 	int i;
@@ -39,35 +36,84 @@ read_map(unsigned int *rows, unsigned int *columns)
 		exit(1);
 	}
 
-	fscanf(f, "%d %d", rows, columns);
+	fscanf(f, "%d %d", &rows, &columns);
 
-	alloc_map(rows, columns);
+	alloc_map();
 
-	for(i = 0; i < *rows; i++)
+	for(i = 0; i < rows; i++)
 		fscanf(f, "%s", map[i]);
 
 	fclose(f);
 }
 
 void
-free_map(unsigned int *rows, unsigned int *columns)
+free_map()
 {
-	for(register int i = 0; i < *rows; i++)
+	for(register int i = 0; i < rows; i++)
 		free(*(map + i));
 	free(map);
 }
 
 int
-main(void)
+end(void)
 {
-	unsigned int rows, columns;
+	return 0;
+}
 
-	read_map(&rows, &columns);
+void
+move(char direction)
+{
+	int x, y;
+
+	for(register int i = 0; i < rows; i++)
+		for(register int j = 0; j < columns; j++)
+			if (map[i][j] == '@') {
+				x = i, y = j;
+				break;
+			}
+
+	switch (direction)
+	{
+		case 'a':
+			map[x][y-1] = '@';
+			break;
+		case 'w':
+			map[x-1][y] = '@';
+			break;
+		case 's':
+			map[x+1][y] = '@';
+			break;
+		case 'd':
+			map[x][y+1] = '@';
+			break;
+	}
+
+	map[x][y] = '.';
+}
+
+void
+print_map()
+{
 
 	for(register int i = 0; i < rows; i++)
 		printf("%s\n", map[i]);
-	
-	free_map(&rows, &columns);
+}
+
+int
+main(void)
+{
+	read_map();
+
+	do {
+		char command;
+
+		print_map();
+
+		scanf(" %c", &command);
+		move(command);
+	} while (!end());
+
+	free_map();
 
 	return 0;
 }

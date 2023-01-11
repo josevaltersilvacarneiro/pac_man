@@ -3,9 +3,13 @@
 #include <stdbool.h>
 
 char **map;
+unsigned rows, columns;
 
 void check_alloc_ptr(bool ptr);
-void alloc_map(unsigned int *rows, unsigned int *columns);
-void read_map(unsigned int *rows, unsigned int *columns);
-void free_map(unsigned int *rows, unsigned int *columns);
+void alloc_map(void);
+void read_map(void);
+void free_map(void);
+int end(void);
+void move(char direction);
+void print_map(void);
 int main(void);
