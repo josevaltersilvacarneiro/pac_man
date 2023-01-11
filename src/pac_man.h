@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-char **map;
-unsigned rows, columns;
+struct map {
+	char **map;
+	unsigned rows, columns;
+} pac_man;
 
 void check_alloc_ptr(bool ptr);
 void alloc_map(void);

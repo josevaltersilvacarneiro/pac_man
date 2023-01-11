@@ -13,13 +13,13 @@ check_alloc_ptr(bool ptr)
 void
 alloc_map()
 {
-	map = malloc(sizeof(char *) * rows);
-	check_alloc_ptr(map == NULL);
+pac_man.map = malloc(sizeof(char *) * pac_man.rows);
+	check_alloc_ptr(pac_man.map == NULL);
 
-	for(register int i = 0; i < rows; i++)
+	for(register int i = 0; i < pac_man.rows; i++)
 	{
-		map[i] = malloc(sizeof(char) * columns);
-		check_alloc_ptr(map[i] == NULL);
+	pac_man.map[i] = malloc(sizeof(char) * pac_man.columns);
+		check_alloc_ptr(pac_man.map[i] == NULL);
 	}
 }
 
@@ -36,12 +36,12 @@ read_map()
 		exit(1);
 	}
 
-	fscanf(f, "%d %d", &rows, &columns);
+	fscanf(f, "%d %d", &pac_man.rows, &pac_man.columns);
 
 	alloc_map();
 
-	for(i = 0; i < rows; i++)
-		fscanf(f, "%s", map[i]);
+	for(i = 0; i < pac_man.rows; i++)
+		fscanf(f, "%s", pac_man.map[i]);
 
 	fclose(f);
 }
@@ -49,9 +49,9 @@ read_map()
 void
 free_map()
 {
-	for(register int i = 0; i < rows; i++)
-		free(*(map + i));
-	free(map);
+	for(register int i = 0; i < pac_man.rows; i++)
+		free(*(pac_man.map + i));
+	free(pac_man.map);
 }
 
 int
@@ -65,9 +65,9 @@ move(char direction)
 {
 	int x, y;
 
-	for(register int i = 0; i < rows; i++)
-		for(register int j = 0; j < columns; j++)
-			if (map[i][j] == '@') {
+	for(register int i = 0; i < pac_man.rows; i++)
+		for(register int j = 0; j < pac_man.columns; j++)
+			if (pac_man.map[i][j] == '@') {
 				x = i, y = j;
 				break;
 			}
@@ -75,28 +75,28 @@ move(char direction)
 	switch (direction)
 	{
 		case 'a':
-			map[x][y-1] = '@';
+		pac_man.map[x][y-1] = '@';
 			break;
 		case 'w':
-			map[x-1][y] = '@';
+		pac_man.map[x-1][y] = '@';
 			break;
 		case 's':
-			map[x+1][y] = '@';
+		pac_man.map[x+1][y] = '@';
 			break;
 		case 'd':
-			map[x][y+1] = '@';
+		pac_man.map[x][y+1] = '@';
 			break;
 	}
 
-	map[x][y] = '.';
+pac_man.map[x][y] = '.';
 }
 
 void
 print_map()
 {
 
-	for(register int i = 0; i < rows; i++)
-		printf("%s\n", map[i]);
+	for(register int i = 0; i < pac_man.rows; i++)
+		printf("%s\n", pac_man.map[i]);
 }
 
 int
