@@ -13,7 +13,7 @@ check_alloc_ptr(bool ptr)
 void
 alloc_map()
 {
-pac_man.map = malloc(sizeof(char *) * pac_man.rows);
+	pac_man.map = malloc(sizeof(char *) * pac_man.rows);
 	check_alloc_ptr(pac_man.map == NULL);
 
 	for(register int i = 0; i < pac_man.rows; i++)
