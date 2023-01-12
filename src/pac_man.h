@@ -4,6 +4,7 @@
 #include "map.h"
 
 MAP pac_man;
+MAN man;
 
 int end(void);
 void move(char direction);

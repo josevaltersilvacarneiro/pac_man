@@ -11,6 +11,17 @@ check_alloc_ptr(bool show)
 }
 
 void
+find_map(MAP *pac_man, MAN *man, char c)
+{
+	for(register int i = 0; i < pac_man->rows; i++)
+                for(register int j = 0; j < pac_man->columns; j++)
+                        if (pac_man->map[i][j] == c) {
+                                man->x = i, man->y = j;
+                                break;
+                        }
+}
+
+void
 alloc_map(MAP *pac_man)
 {
         pac_man->map = malloc(sizeof(char *) * pac_man->rows);
@@ -61,4 +72,3 @@ print_map(MAP *pac_man)
         for(register int i = 0; i < pac_man->rows; i++)
                 printf("%s\n", pac_man->map[i]);
 }
-

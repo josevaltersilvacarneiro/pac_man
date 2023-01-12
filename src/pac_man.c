@@ -9,38 +9,34 @@ end(void)
 void
 move(char direction)
 {
-	int x, y;
-
-	for(register int i = 0; i < pac_man.rows; i++)
-		for(register int j = 0; j < pac_man.columns; j++)
-			if (pac_man.map[i][j] == '@') {
-				x = i, y = j;
-				break;
-			}
+	pac_man.map[man.x][man.y] = '.';
 
 	switch (direction)
 	{
 		case 'a':
-		pac_man.map[x][y-1] = '@';
+			pac_man.map[man.x][man.y-1] = '@';
+			man.y--;
 			break;
 		case 'w':
-		pac_man.map[x-1][y] = '@';
+			pac_man.map[man.x-1][man.y] = '@';
+			man.x--;
 			break;
 		case 's':
-		pac_man.map[x+1][y] = '@';
+			pac_man.map[man.x+1][man.y] = '@';
+			man.x++;
 			break;
 		case 'd':
-		pac_man.map[x][y+1] = '@';
+			pac_man.map[man.x][man.y+1] = '@';
+			man.y++;
 			break;
 	}
-
-pac_man.map[x][y] = '.';
 }
 
 int
 main(void)
 {
 	read_map(&pac_man);
+	find_map(&pac_man, &man, '@');
 
 	do {
 		char command;
