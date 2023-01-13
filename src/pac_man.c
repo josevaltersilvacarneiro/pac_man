@@ -30,10 +30,10 @@ move(char direction)
 	if (
 			x < pac_man.rows &&
 			y < pac_man.columns &&
-			pac_man.map[x][y] == '.'
+			pac_man.map[x][y] == SPACE
 	   ) {
-		pac_man.map[x][y] = '@';
-		pac_man.map[man.x][man.y] = '.';
+		pac_man.map[x][y] = PAC_MAN;
+		pac_man.map[man.x][man.y] = SPACE;
 		man.x = x; man.y = y;
 	}
 }
@@ -42,7 +42,7 @@ int
 main(void)
 {
 	read_map(&pac_man);
-	find_map(&pac_man, &man, '@');
+	find_map(&pac_man, &man, PAC_MAN);
 
 	do {
 		char command;
