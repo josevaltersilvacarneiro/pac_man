@@ -9,26 +9,32 @@ end(void)
 void
 move(char direction)
 {
-	pac_man.map[man.x][man.y] = '.';
+	unsigned x = man.x, y = man.y;
 
 	switch (direction)
 	{
 		case 'a':
-			pac_man.map[man.x][man.y-1] = '@';
-			man.y--;
+			y--;
 			break;
 		case 'w':
-			pac_man.map[man.x-1][man.y] = '@';
-			man.x--;
+			x--;
 			break;
 		case 's':
-			pac_man.map[man.x+1][man.y] = '@';
-			man.x++;
+			x++;
 			break;
 		case 'd':
-			pac_man.map[man.x][man.y+1] = '@';
-			man.y++;
+			y++;
 			break;
+	}
+
+	if (
+			x < pac_man.rows &&
+			y < pac_man.columns &&
+			pac_man.map[x][y] == '.'
+	   ) {
+		pac_man.map[x][y] = '@';
+		pac_man.map[man.x][man.y] = '.';
+		man.x = x; man.y = y;
 	}
 }
 
@@ -43,7 +49,10 @@ main(void)
 
 		print_map(&pac_man);
 
-		scanf(" %c", &command);
+		do {
+			scanf(" %c", &command);
+		} while (command != 'a' && command != 'w' && command != 's' && command != 'd');
+
 		move(command);
 	} while (!end());
 
