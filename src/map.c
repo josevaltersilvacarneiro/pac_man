@@ -1,6 +1,15 @@
 #include "map.h"
 
 void
+go(MAP *pac_man, unsigned *x, unsigned *y,
+                unsigned new_x, unsigned new_y, char symb)
+{
+        pac_man->map[*x][*y] = SPACE;
+	pac_man->map[new_x][new_y] = symb;
+	*x = new_x; *y = new_y;
+}
+
+void
 check_alloc_ptr(bool show)
 {
 	if (show)
