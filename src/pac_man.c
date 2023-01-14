@@ -16,7 +16,7 @@ move_ghosts(void)
 				y = ghosts[i].y;
 		}
 
-		go(&pac_man, &ghosts[i].x, &ghosts[i].y, x, y, GHOST);
+		go(&pac_man, &ghosts[i], x, y);
 	}
 }
 
@@ -54,7 +54,7 @@ move(char direction)
 	}
 
 	if (is_position_valid(&pac_man, x, y))
-		go(&pac_man, &man.x, &man.y, x, y, PAC_MAN);
+		go(&pac_man, &man, x, y);
 }
 
 int

@@ -1,12 +1,12 @@
 #include "map.h"
 
 void
-go(MAP *pac_man, unsigned *x, unsigned *y,
-                unsigned new_x, unsigned new_y, char symb)
+go(MAP *pac_man, CHARACTER *character,
+		unsigned new_x, unsigned new_y)
 {
-        pac_man->map[*x][*y] = SPACE;
-	pac_man->map[new_x][new_y] = symb;
-	*x = new_x; *y = new_y;
+        pac_man->map[character->x][character->y] = SPACE;
+	pac_man->map[new_x][new_y] = character->symb;
+	character->x = new_x; character->y = new_y;
 }
 
 void
