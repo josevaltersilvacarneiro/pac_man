@@ -20,12 +20,18 @@ check_alloc_ptr(bool show)
 }
 
 void
-find_map(MAP *pac_man, MAN *man, char c)
+find_map(unsigned x, unsigned y, MAP *pac_man,
+		CHARACTER *character, const char symb)
 {
-	for(register int i = 0; i < pac_man->rows; i++)
-                for(register int j = 0; j < pac_man->columns; j++)
-                        if (pac_man->map[i][j] == c) {
-                                man->x = i, man->y = j;
+	unsigned i, j;
+	bool found = false;
+
+	for(i = x; i < pac_man->rows && !found; i++)
+                for(j = i == x ? y : 0; j < pac_man->columns; j++)
+                        if (pac_man->map[i][j] == symb) {
+                                character->x = i, character->y = j;
+				character->symb = symb;
+				found = true;
                                 break;
                         }
 }

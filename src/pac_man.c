@@ -1,14 +1,23 @@
 #include "pac_man.h"
 
 void
-ghosts(void)
+move_ghosts(void)
 {
-	for (unsigned i = 0; i < pac_man.rows; i++)
-		for (unsigned int j = 0; j < pac_man.columns; j++)
-			if (
-					pac_man.map[i][j] == GHOST &&
-					is_position_valid(&pac_man, i, j+1)
-				) go(&pac_man, &i, &j, i, j+1, GHOST);
+	for (register unsigned i = 0; i < 2; i++) {
+		unsigned x = ghosts[i].x;
+		unsigned y = ghosts[i].y;
+
+		for (register unsigned j = 0; j < 10; j++) {
+			y++;
+
+			if (is_position_valid(&pac_man, x, y))
+				break;
+			else if (j + 1 == 10)
+				y = ghosts[i].y;
+		}
+
+		go(&pac_man, &ghosts[i].x, &ghosts[i].y, x, y, GHOST);
+	}
 }
 
 int
@@ -52,7 +61,16 @@ int
 main(void)
 {
 	read_map(&pac_man);
-	find_map(&pac_man, &man, PAC_MAN);
+	find_map(0, 0, &pac_man, &man, PAC_MAN);
+
+	for (register int i = 0; i < 2; i++) {
+		unsigned x, y;
+		
+		x = i == 0 ? 0 : ghosts[i-1].x;
+		y = i == 0 ? 0 : ghosts[i-1].y + 1;
+
+		find_map(x, y, &pac_man, &ghosts[i], GHOST);
+	}
 
 	do {
 		char command;
@@ -64,7 +82,7 @@ main(void)
 		} while (command != 'a' && command != 'w' && command != 's' && command != 'd');
 
 		move(command);
-		ghosts();
+		move_ghosts();
 	} while (!end());
 
 	free_map(&pac_man);
