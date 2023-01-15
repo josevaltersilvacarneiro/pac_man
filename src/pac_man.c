@@ -43,6 +43,16 @@ move_ghosts(void)
 int
 end(void)
 {
+	for (register unsigned i = 0; i < 2; i++) {
+		unsigned x, y;
+
+		x = man.x, y = man.y;
+
+		if (
+				(ghosts[i].x - x == 0 && abs(ghosts[i].y - y) == 1) ||
+				(abs(ghosts[i].x - x) == 1 && ghosts[i].y - y == 0)
+		) return 1;
+	}
 	return 0;
 }
 
@@ -104,6 +114,8 @@ main(void)
 		move(command);
 		move_ghosts();
 	} while (!end());
+
+	print_map(&pac_man);
 
 	free_map(&pac_man);
 
