@@ -43,16 +43,10 @@ move_ghosts(void)
 int
 end(void)
 {
-	for (register unsigned i = 0; i < 2; i++) {
-		unsigned x, y;
+	for (register unsigned i = 0; i < 2; i++)
+		if (are_characters_close(&man.man, &ghosts[i]))
+			return 1;
 
-		x = man.x, y = man.y;
-
-		if (
-				(ghosts[i].x - x == 0 && abs(ghosts[i].y - y) == 1) ||
-				(abs(ghosts[i].x - x) == 1 && ghosts[i].y - y == 0)
-		) return 1;
-	}
 	return 0;
 }
 
@@ -65,7 +59,7 @@ is_position_valid(MAP *pac_man, unsigned x, unsigned y)
 void
 move(char direction)
 {
-	unsigned x = man.x, y = man.y;
+	unsigned x = man.man.x, y = man.man.y;
 
 	switch (direction)
 	{
@@ -81,17 +75,23 @@ move(char direction)
 		case 'd':
 			y++;
 			break;
+		case 'b':
+			break;
 	}
 
 	if (is_position_valid(&pac_man, x, y))
-		go(&pac_man, &man, x, y);
+		go(&pac_man, &man.man, x, y);
 }
 
 int
 main(void)
 {
 	read_map(&pac_man);
-	find_map(0, 0, &pac_man, &man, PAC_MAN);
+
+	find_map(0, 0, &pac_man, &man.man, PAC_MAN);
+	find_map(0, 0, &pac_man, &bomb, BOMB);
+
+	man.bomb = false;
 
 	for (register int i = 0; i < 2; i++) {
 		unsigned x, y;
@@ -109,9 +109,13 @@ main(void)
 
 		do {
 			scanf(" %c", &command);
-		} while (command != 'a' && command != 'w' && command != 's' && command != 'd');
+		} while (command != 'a' && command != 'w' && command != 's' && command != 'd' && command != 'b');
 
 		move(command);
+		if (!man.bomb && are_characters_close(&man.man, &bomb)) {
+			pac_man.map[bomb.x][bomb.y] = SPACE;
+			man.bomb = true;
+		}
 		move_ghosts();
 	} while (!end());
 

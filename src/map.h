@@ -7,20 +7,30 @@ struct map {
         char **map;
 };
 
+typedef struct map MAP;
+
 struct character {
         unsigned x, y;
 	char symb;
 }; 
 
 typedef struct character CHARACTER;
-typedef struct map MAP;
+
+struct man {
+	CHARACTER man;
+	bool bomb;
+};
+
+typedef struct man MAN;
 
 #define VERTICAL_WALL   '|'
 #define HORIZONTAL_WALL '-'
 #define PAC_MAN         '@'
 #define GHOST           'F'
 #define SPACE           '.'
+#define BOMB		'B'
 
+bool are_characters_close(const CHARACTER *first, const CHARACTER *last);
 void go(MAP *pac_man, CHARACTER *character, unsigned new_x, unsigned new_y);
 void check_alloc_ptr(bool ptr);
 void find_map(unsigned x, unsigned y, MAP *pac_man, CHARACTER *character, const char symb);

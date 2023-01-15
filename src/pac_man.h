@@ -5,7 +5,8 @@
 #include "map.h"
 
 MAP pac_man;
-CHARACTER man;
+MAN man;
+CHARACTER bomb;
 
 CHARACTER ghosts[2];
 

@@ -1,5 +1,22 @@
 #include "map.h"
 
+bool
+are_characters_close(const CHARACTER *first, const CHARACTER *last)
+{
+	unsigned first_x, first_y;
+	unsigned last_x, last_y;
+
+        first_x = first->x, first_y = first->y;
+	last_x  = last->x , last_y = last->y ;
+                    
+	if (
+		(last_x - first_x == 0 && abs(last_y - first_y) == 1) ||
+		(abs(last_x - first_x) == 1 && last_y - first_y == 0)
+	) return true;
+	
+	return false;
+}
+
 void
 go(MAP *pac_man, CHARACTER *character,
 		unsigned new_x, unsigned new_y)
