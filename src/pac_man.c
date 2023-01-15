@@ -8,12 +8,33 @@ move_ghosts(void)
 		unsigned y = ghosts[i].y;
 
 		for (register unsigned j = 0; j < 10; j++) {
-			y++;
+			unsigned seconds = time(0);
+			unsigned rand_num;
+
+			srand(seconds);
+			rand_num = rand() % 4 + 1;
+
+			switch (rand_num) {
+				case 1:
+					x++;
+					break;
+				case 2:
+					y++;
+					break;
+				case 3:
+					x--;
+					break;
+				case 4:
+					y--;
+					break;
+			}
 
 			if (is_position_valid(&pac_man, x, y))
 				break;
-			else if (j + 1 == 10)
+			else {
+				x = ghosts[i].x;
 				y = ghosts[i].y;
+			}
 		}
 
 		go(&pac_man, &ghosts[i], x, y);
