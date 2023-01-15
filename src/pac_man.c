@@ -31,10 +31,9 @@ move_ghosts(void)
 
 			if (is_position_valid(&pac_man, x, y))
 				break;
-			else {
-				x = ghosts[i].x;
-				y = ghosts[i].y;
-			}
+			
+			x = ghosts[i].x;
+			y = ghosts[i].y;
 		}
 
 		go(&pac_man, &ghosts[i], x, y);
