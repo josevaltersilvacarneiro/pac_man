@@ -107,6 +107,7 @@ main(void)
 
 		print_map(&pac_man);
 
+		move_ghosts();
 		do {
 			scanf(" %c", &command);
 		} while (command != 'a' && command != 'w' && command != 's' && command != 'd' && command != 'b');
@@ -116,7 +117,6 @@ main(void)
 			pac_man.map[bomb.x][bomb.y] = SPACE;
 			man.bomb = true;
 		}
-		move_ghosts();
 	} while (!end());
 
 	print_map(&pac_man);
