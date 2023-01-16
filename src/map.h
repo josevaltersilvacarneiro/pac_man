@@ -23,10 +23,17 @@ struct man {
 
 typedef struct man MAN;
 
+struct ghost {
+	CHARACTER ghost;
+	bool status;
+};
+
+typedef struct ghost GHOST;
+
 #define VERTICAL_WALL   '|'
 #define HORIZONTAL_WALL '-'
 #define PAC_MAN         '@'
-#define GHOST           'F'
+#define SYMB_GHOST      'F'
 #define SPACE           '.'
 #define BOMB		'B'
 

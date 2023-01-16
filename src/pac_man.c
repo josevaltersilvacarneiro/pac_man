@@ -4,8 +4,8 @@ void
 move_ghosts(void)
 {
 	for (register unsigned i = 0; i < 2; i++) {
-		unsigned x = ghosts[i].x;
-		unsigned y = ghosts[i].y;
+		unsigned x = ghosts[i].ghost.x;
+		unsigned y = ghosts[i].ghost.y;
 
 		for (register unsigned j = 0; j < 10; j++) {
 			unsigned seconds = time(0);
@@ -32,19 +32,28 @@ move_ghosts(void)
 			if (is_position_valid(&pac_man, x, y))
 				break;
 			
-			x = ghosts[i].x;
-			y = ghosts[i].y;
+			x = ghosts[i].ghost.x;
+			y = ghosts[i].ghost.y;
 		}
 
-		go(&pac_man, &ghosts[i], x, y);
+		if (ghosts[i].status)
+			go(&pac_man, &ghosts[i].ghost, x, y);
 	}
+}
+
+void
+explode_bomb(void)
+{
+	for (register unsigned i = man.man.y-1; i >= man.man.y-3; i--)
+		if (man.man.x < pac_man.rows && i < pac_man.columns)
+			pac_man.map[man.man.x][i] = SPACE;
 }
 
 int
 end(void)
 {
 	for (register unsigned i = 0; i < 2; i++)
-		if (are_characters_close(&man.man, &ghosts[i]))
+		if (ghosts[i].status && are_characters_close(&man.man, &ghosts[i].ghost))
 			return 1;
 
 	return 0;
@@ -76,6 +85,7 @@ move(char direction)
 			y++;
 			break;
 		case 'b':
+			explode_bomb();
 			break;
 	}
 
@@ -96,10 +106,10 @@ main(void)
 	for (register int i = 0; i < 2; i++) {
 		unsigned x, y;
 		
-		x = i == 0 ? 0 : ghosts[i-1].x;
-		y = i == 0 ? 0 : ghosts[i-1].y + 1;
+		x = i == 0 ? 0 : ghosts[i-1].ghost.x;
+		y = i == 0 ? 0 : ghosts[i-1].ghost.y + 1;
 
-		find_map(x, y, &pac_man, &ghosts[i], GHOST);
+		find_map(x, y, &pac_man, &ghosts[i].ghost, SYMB_GHOST);
 	}
 
 	do {
@@ -119,6 +129,7 @@ main(void)
 		}
 	} while (!end());
 
+	pac_man.map[man.man.x][man.man.y] = SPACE;
 	print_map(&pac_man);
 
 	free_map(&pac_man);
