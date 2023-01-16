@@ -3,42 +3,47 @@
 void
 move_ghosts(void)
 {
-	for (register unsigned i = 0; i < 2; i++) {
-		unsigned x = ghosts[i].ghost.x;
-		unsigned y = ghosts[i].ghost.y;
+	for (register unsigned i = 0; i < 2; i++)
+		if (ghosts[i].status) {
 
-		for (register unsigned j = 0; j < 10; j++) {
-			unsigned seconds = time(0);
-			unsigned rand_num;
+			unsigned x = ghosts[i].ghost.x;
+			unsigned y = ghosts[i].ghost.y;
 
-			srand(seconds);
-			rand_num = rand() % 4 + 1;
+			// Choose a random position
 
-			switch (rand_num) {
-				case 1:
-					x++;
-					break;
-				case 2:
-					y++;
-					break;
-				case 3:
-					x--;
-					break;
-				case 4:
-					y--;
-					break;
-			}
+			for (register unsigned j = 0; j < 10; j++) {
+				unsigned seconds = time(0);
+				unsigned rand_num;
 
-			if (is_position_valid(&pac_man, x, y))
-				break;
+				srand(seconds);
+				rand_num = rand() % 4 + 1;
+
+				switch (rand_num) {
+					case 1:
+						x++;
+						break;
+					case 2:
+						y++;
+						break;
+					case 3:
+						x--;
+						break;
+					case 4:
+						y--;
+						break;
+				}
+
+				if (is_position_valid(&pac_man, x, y))
+					break;
 			
-			x = ghosts[i].ghost.x;
-			y = ghosts[i].ghost.y;
-		}
+				x = ghosts[i].ghost.x;
+				y = ghosts[i].ghost.y;
+			}
+			
+			// Go to the random position
 
-		if (ghosts[i].status)
 			go(&pac_man, &ghosts[i].ghost, x, y);
-	}
+		}
 }
 
 void
